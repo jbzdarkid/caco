@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Borderlands', 'Lost Barony', 'The Broken Road', 'The Cauldrons',
 
         // Cartographers: Heroes
+        // Rules available here: https://github.com/rgaiacs/cartographers-shiny/blob/main/data/scoring.csv
         // 'Deepwood', 'Faunlost Thicket', 'Heart of the Forest', 'Sleepy Valley',
         // 'Clawsgrave Peaks', 'Craylund', 'Jorekburg', 'Ulem\'s Wallow',
         // 'Caravansary', 'Gnomish Colony', 'Outer Enclave', 'Traylo Monastery',
@@ -14,11 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Cartographers: Nebblis (Map pack 1)
         
-        // Cartographers: Affril (Map pack 2)
+        // Cartographers: Affril (Map pack 2) -- this is the one with the islands
         // 'Crystalline Surveyor', 'Klynoks Settlement', 'Purplestone Miners',
 
         // Cartographers: Undercity (Map pack 3)
-        'Ancient Speulchre', 'Azema\'s Bones', 'The Pit',
+        'Ancient Speulchre', 'Azema\'s Bones', // 'The Pit' -> Requires a special map type
 
         // Cartographers: Frozen Expanse (Map pack 4)
 

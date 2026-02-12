@@ -1,8 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
     const goals = [
-        'The Golden Granary', 'Canal Lake', 'Shoreside Expanse', 'Mages Valley', 'Sentinel Wood', 'Treetower',
-        'Stoneside Forest', 'Greenbough', 'Lost Barony', 'Borderlands', 'The Cauldrons', 'The Broken Road',
-        'Wildholds', 'Great City', 'Shieldgate', 'Greengold Plains'
+        // Cartographers
+        'Greenbough', 'Sentinel Wood', 'Stoneside Forest', 'Treetower',
+        'Canal Lake', 'Mages Valley', 'Shoreside Expanse', 'The Golden Granary',
+        'Great City', 'Greengold Plains', 'Shieldgate', 'Wildholds',
+        'Borderlands', 'Lost Barony', 'The Broken Road', 'The Cauldrons',
+
+        // Cartographers: Heroes
+        // 'Deepwood', 'Faunlost Thicket', 'Heart of the Forest', 'Sleepy Valley',
+        // 'Clawsgrave Peaks', 'Craylund', 'Jorekburg', 'Ulem\'s Wallow',
+        // 'Caravansary', 'Gnomish Colony', 'Outer Enclave', 'Traylo Monastery',
+        // 'Banded Hills', 'Dwarvenholds', 'Silos', 'Starlit Sigils',
+
+        // Cartographers: Nebblis (Map pack 1)
+        
+        // Cartographers: Affril (Map pack 2)
+        // 'Crystalline Surveyor', 'Klynoks Settlement', 'Purplestone Miners',
+
+        // Cartographers: Undercity (Map pack 3)
+        'Ancient Speulchre', 'Azema\'s Bones', 'The Pit',
+
+        // Cartographers: Frozen Expanse (Map pack 4)
+
+        // Cartographers: Kethra's Steppe (Map pack 5)
+        // 'Beacon\'s Radiance', 'Everburning Flame', 'Summit\'s Splendor',
+        
+        // Cartographers: Hornhelm (Map pack 6)
     ];
 
     const goalInputs = ['goalA', 'goalB', 'goalC', 'goalD'];
@@ -295,22 +318,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateGoals(season) {
         const goalsMap = {
-            'The Golden Granary': scoreTheGoldenGranary,
+            'Azema\'s Bones': scoreAzemasBones,
+            'Borderlands': scoreBorderlands,
             'Canal Lake': scoreCanalLake,
-            'Shoreside Expanse': scoreShoresideExpanse,
+            'Great City': scoreGreatCity,
+            'Greenbough': scoreGreenbough,
+            'Greengold Plains': scoreGreengoldPlains,
+            'Lost Barony': scoreLostBarony,
             'Mages Valley': scoreMagesValley,
             'Sentinel Wood': scoreSentinelWood,
-            'Treetower': scoreTreetower,
-            'Stoneside Forest': scoreStonesideForest,
-            'Greenbough': scoreGreenbough,
-            'Lost Barony': scoreLostBarony,
-            'Borderlands': scoreBorderlands,
-            'The Cauldrons': scoreTheCauldrons,
-            'The Broken Road': scoreTheBrokenRoad,
-            'Wildholds': scoreWildholds,
-            'Great City': scoreGreatCity,
             'Shieldgate': scoreShieldgate,
-            'Greengold Plains': scoreGreengoldPlains
+            'Shoreside Expanse': scoreShoresideExpanse,
+            'Stoneside Forest': scoreStonesideForest,
+            'The Broken Road': scoreTheBrokenRoad,
+            'The Cauldrons': scoreTheCauldrons,
+            'The Golden Granary': scoreTheGoldenGranary,
+            'Treetower': scoreTreetower,
+            'Wildholds': scoreWildholds,
         };
 
         const goalsForSeason = {
@@ -543,6 +567,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function scoreLostBarony() {
         const filledSpaces = getLargestSquareOfFilledSpaces();
         return Math.sqrt(filledSpaces.length) * 3;
+    }
+
+    function scoreAzemasBones() {
+        let uniqueTerrainTypes = new Set();
+        for (let j = 0; j < 11; j++) {
+            let terrainType = grid.children[10 * 11 + j].dataset.terrain;
+            uniqueTerrainTypes.add(terrainType);
+        }
+        uniqueTerrainTypes.delete(null);
+        uniqueTerrainTypes.delete(undefined);
+        uniqueTerrainTypes.delete('mountain');
+        return 5 * uniqueTerrainTypes.size;
     }
 
     function scoreBorderlands() {

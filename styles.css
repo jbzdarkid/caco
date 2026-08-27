@@ -125,6 +125,13 @@ header h1 {
     background-repeat: no-repeat;
 }
 
+.grid .chasm {
+    background-color: rgb(80, 70, 60);
+    background-image: linear-gradient(135deg, rgb(70, 60, 50) 0%, rgb(90, 80, 70) 50%, rgb(70, 60, 50) 100%);
+    border-color: rgb(60, 50, 40);
+    cursor: not-allowed;
+}
+
 /* Coins section */
 .coins-section {
     display: flex;

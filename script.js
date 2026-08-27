@@ -38,11 +38,26 @@ document.addEventListener('DOMContentLoaded', () => {
         'monster': 'purple'
     };
 
+    const mapLayouts = {
+        'a': {
+            ruins: [[2, 1], [1, 5], [2, 9], [8, 1], [9, 5], [8, 9]],
+            mountains: [[1, 3], [2, 8], [8, 2], [9, 7], [5, 5]],
+            chasm: []
+        },
+        'b': {
+            ruins: [[1, 6], [2, 2], [4, 6], [6, 1], [7, 8], [9, 3]],
+            mountains: [[1, 8], [2, 3], [7, 5], [8, 9], [9, 2]],
+            chasm: [[3, 5], [4, 4], [4, 5], [5, 4], [5, 5], [5, 6], [6, 5]]
+        }
+    };
+
     const grid = document.querySelector('.grid');
     const seasonSelect = document.getElementById('season');
+    const mapSelect = document.getElementById('map-side');
     const circleSlots = document.querySelector('.circle-slots');
     let selectedTerrain = null;
     let currentSeason = seasonSelect.value;
+    let currentMap = mapSelect.value;
     
     const seasons = ['spring', 'summer', 'fall', 'winter'];
 
@@ -68,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initGrid() {
+        grid.innerHTML = '';
         for (let i = 0; i < 11; i++) {
             for (let j = 0; j < 11; j++) {
                 const cell = document.createElement('div');
@@ -87,20 +103,29 @@ document.addEventListener('DOMContentLoaded', () => {
             cell.style.backgroundImage = "url('mountain.svg')";
             cell.dataset.mountain = "true";
         }
+        if (isChasmTile(i, j)) {
+            cell.classList.add('chasm');
+            cell.dataset.terrain = 'chasm';
+        }
     }
 
     function isRuinTile(i, j) {
-        const ruins = [[2, 1], [1, 5], [2, 9], [8, 1], [9, 5], [8, 9]];
+        const ruins = mapLayouts[currentMap].ruins;
         return ruins.some(coord => coord[0] === i && coord[1] === j);
     }
 
     function isMountainTile(i, j) {
-        const mountains = [[1, 3], [2, 8], [8, 2], [9, 7], [5, 5]];
+        const mountains = mapLayouts[currentMap].mountains;
         return mountains.some(coord => coord[0] === i && coord[1] === j);
     }
 
+    function isChasmTile(i, j) {
+        const chasm = mapLayouts[currentMap].chasm;
+        return chasm.some(coord => coord[0] === i && coord[1] === j);
+    }
+
     function handleCellClick(cell) {
-        if (cell.dataset.terrain !== 'mountain') {
+        if (cell.dataset.terrain !== 'mountain' && cell.dataset.terrain !== 'chasm') {
             if (cell.dataset.terrain) {
                 cell.removeAttribute('data-terrain');
                 cell.style.backgroundColor = '';
@@ -191,6 +216,14 @@ document.addEventListener('DOMContentLoaded', () => {
             updateSeasonScores(currentSeason);
         });
 
+        mapSelect.addEventListener('change', () => {
+            currentMap = mapSelect.value;
+            filledMountains.clear();
+            document.querySelectorAll('.circle-slots .mountain-coin').forEach(circle => circle.classList.remove('filled', 'mountain-coin'));
+            initGrid();
+            updateSeasonScores(currentSeason);
+        });
+
         document.querySelectorAll('.terrain-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 selectedTerrain = btn.dataset.terrain;
@@ -201,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('clear-all').addEventListener('click', () => {
             document.querySelectorAll('.grid div').forEach(cell => {
-                if (cell.dataset.terrain !== 'mountain') {
+                if (cell.dataset.terrain !== 'mountain' && cell.dataset.terrain !== 'chasm') {
                     cell.removeAttribute('data-terrain');
                     cell.style.backgroundColor = '';
                 }
@@ -579,6 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
         uniqueTerrainTypes.delete(null);
         uniqueTerrainTypes.delete(undefined);
         uniqueTerrainTypes.delete('mountain');
+        uniqueTerrainTypes.delete('chasm');
         return 5 * uniqueTerrainTypes.size;
     }
 
@@ -668,7 +702,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const terrainTypes = new Set();
             cluster.forEach(([x, y]) => {
                 getAdjacentCells(x, y).forEach(adj => {
-                    if (adj.dataset.terrain && adj.dataset.terrain !== 'village') {
+                    if (adj.dataset.terrain && adj.dataset.terrain !== 'village' && adj.dataset.terrain !== 'chasm') {
                         terrainTypes.add(adj.dataset.terrain);
                     }
                 });
